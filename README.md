@@ -20,7 +20,7 @@ rokkit.tableExists('foo'); //returns false, the table no longer exists
 ## Documentation
 ### Constructors
 
-`Table`
+**Table**
 
 Creates a new table instance, saving the table to a file of the same name. (eg. creating a table called "foo" will save a JSON file with the name "foo.json" inside ./rokkit.)
 
@@ -31,7 +31,7 @@ Usage:
 
 ### Functions
 
-`Table.createRecord`
+**Table.createRecord**
 
 Creates a record within the table which is being used. For example, using `foo.createRecord('bar', data)` would create a record called "bar" in table "foo".
 
@@ -41,7 +41,7 @@ Usage:
 
 ---
 
- `Table.deleteRecord`
+**Table.deleteRecord**
  
  Deletes an existing record within a table. For example, using `foo.deleteRecord('bar')` would delete the record "bar" from table "foo".
 
@@ -51,7 +51,7 @@ Usage:
 
 ---
 
-`tableExists`
+**tableExists**
 
 Checks whether a table exists in the current Rokkit database. For example, using `rokkit.tableExists('foo')` would return true if you'd already loaded in the table "foo".
 
@@ -61,7 +61,7 @@ Usage:
 
 ---
 
-`searchTable`
+**searchTable**
 
 Searches a specific table in the current Rokkit database for a record. For example, using `rokkit.searchTable('foo', 'bar')` would search the table "foo" for a record called "bar", and return true if a corresponding record was found.
 
@@ -71,7 +71,7 @@ Usage:
 
 ---
 
-`deleteTable`
+**deleteTable**
 
 Removes a table and all it's records from the current Rokkit database. Attempting to delete a table that does not exist will force an error. For example, using `rokkit.deleteTable('foo')` would remove the table "foo" from the database. This is one way, and irrevokable.
 
