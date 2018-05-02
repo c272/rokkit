@@ -4,7 +4,8 @@
 This is a really simple JSON database, which allows you to create and delete tables, search whether tables exist, add records and delete records, and more. Extra features are coming in the future to match the other common database solutions. Data in Rokkit is **always persistent**, so whenever you instantiate a new table called "foo", all data from previous runtimes' "foo" table will be present. All of the database structure is stored in a folder called "Rokkit", in the root of your project directory.
 
 ## Example Usage
-```var rokkit = require('rokkit'); //adding rokkit
+```
+var rokkit = require('rokkit'); //adding rokkit
 var table = new rokkit.Table('foo'); //creating a new table
 
 table.createRecord('bar', 123); //creates a new record called "bar"
