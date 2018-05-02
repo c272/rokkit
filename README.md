@@ -96,6 +96,7 @@ Here are methods that are contained in previous versions of the projects that ha
 Loads all saved tables into the `rokkit.loadedTables` variable. No constructors are used in this method. For example, if you saved a table called "foo", you could load it into memory at the start of runtime by doing `rokkit.load()`, and access the variable by using `rokkit.loadedTables.foo`, followed by any properties.
 
 Usage:
+
 `rokkit.load();`
 
 Reason for Deprecation:
