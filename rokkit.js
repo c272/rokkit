@@ -5,87 +5,75 @@ var fs = require('fs');
 
 //Loading existing table data from file.
 var tables;
-exports.load = function() {
-	if (fs.existsSync('./rokkit/tables.json')) {
-		tables = jsonfile.readFileSync("./rokkit/tables.json");
-	} else {
-		tables = []
-	}
 
-	//Checking folder exists. If not, making it.
+//Table constructor.
+exports.Table = function (tname) {
+	//Checking if folder exists. If not, making it.
 	if (!fs.existsSync('./rokkit')) {
 		fs.mkdirSync('./rokkit');
 	}
-
-	//Loading all table data into RAM.
-	for (i in tables) {
-		var table = jsonfile.readFileSync("./rokkit/"+tables[i]+".json");
-		this[table.tname] = table;
-		table.createRecord = function(name, inp) {
-			//Checking for invalid record.
-			if (name=="tname" || name=="deleteRecord" || name=="createRecord" || name=="this") {
-				throw "Invalid record argument, cannot overwrite table name.";
-			} else {
-				//Create record function, adding record to table.
-				this[name] = inp;
-				jsonfile.writeFileSync("./rokkit/"+this.tname+".json", this);
-			}
-		}
-		table.deleteRecord = function(name) {
-			//Checking for invalid removal.
-			if (name=="tname" || name=="deleteRecord" || name=="createRecord" || name=="this") {
-				throw "Invalid record argument, cannot delete table name.";
-			} else {
-				//Delete record function, removing supposed property.
-				delete this[name];
-				jsonfile.writeFileSync("./rokkit/"+this.tname+".json", this);
-			}
-		}
+	//Loading in tables.
+	if (fs.existsSync('./rokkit/tables.json')) {
+		var tables = jsonfile.readFileSync('./rokkit/tables.json');
+	} else {
+		tables = [];
 	}
-	console.log(this);
-}
 
-//Loading package functions.
-exports.createTable = function (tname) {
+	//Instatiating a new table object.
+	this.tname = tname;
+	this.contents = [];
+
 	//Pushing a table into the table data array.
 	doesExist = tables.indexOf(tname);
-	if (doesExist=-1) {
+	if (doesExist==-1) {
 		tables.push(tname);
 
 		//Creating a blank table file under that name.
 		var template = {};
 		jsonfile.writeFileSync("./rokkit/"+tname+".json", template);
-
-		//Instatiating a new table object.
-		this[tname] = {
-			tname: tname,
-			createRecord: function(name, inp) {
-				//Checking for invalid record.
-				if (name=="tname" || name=="deleteRecord" || name=="createRecord" || name=="this") {
-					throw "Invalid record argument, cannot overwrite table name.";
-				} else {
-					//Create record function, adding record to table.
-					this[name] = inp;
-					jsonfile.writeFileSync("./rokkit/"+this.tname+".json", this);
-				}
-			},
-			deleteRecord: function(name) {
-				//Checking for invalid removal.
-				if (name=="tname" || name=="deleteRecord" || name=="createRecord" || name=="this") {
-					throw "Invalid record argument, cannot delete table name.";
-				} else {
-					//Delete record function, removing supposed property.
-					delete this[name];
-					jsonfile.writeFileSync("./rokkit/"+this.tname+".json", this);
-				}
-			}
-		};
-
-		//Saving table file.
-		jsonfile.writeFileSync('./rokkit/tables.json', tables);
 	} else {
-		throw "Table already exists.";
+		//Already exists, loading table instead.
+		var table = jsonfile.readFileSync('./rokkit/'+tname+".json");
+		for (i in table.contents) {
+			this[table.contents[i]] = table[table.contents[i]];
+		}
 	}
+
+	//Table object functions.
+	this.createRecord = function(name, inp) {
+		//Checking for invalid record.
+		if (name=="tname" || name=="deleteRecord" || name=="createRecord" || name=="this" || name=="contents") {
+			throw "Invalid record argument, cannot overwrite critical table data.";
+		} else {
+			//Create record function, adding record to table.
+			this[name] = inp;
+			this.contents.push(name);
+
+			//Resaving table.
+			jsonfile.writeFileSync("./rokkit/"+this.tname+".json", this);
+		}
+	}
+	this.deleteRecord = function(name) {
+		//Checking for invalid removal.
+		if (name=="tname" || name=="deleteRecord" || name=="createRecord" || name=="this" || name=="contents") {
+			throw "Invalid record argument, cannot delete critical table data.";
+		} else {
+			//Delete record function, removing supposed property.
+			delete this[name];
+			var contIndex = this.contents.indexOf(name);
+
+			//Deleting contents record.
+			if (contIndex!=-1) {
+				this.contents.splice(contIndex, 1);
+			}
+
+			//Resaving table.
+			jsonfile.writeFileSync("./rokkit/"+this.tname+".json", this);
+		}
+	}
+
+	//Saving table file.
+	jsonfile.writeFileSync('./rokkit/tables.json', tables);
 }
 
 //Deleting table from table array.
@@ -105,10 +93,11 @@ exports.deleteTable = function (tname) {
 //Search through the properties of a table for a defined string.
 exports.searchTable = function(tname, sterm) {
 	if (!sterm || !tname) {
-		throw "Error: 2 arguments required to search a table.";
+		throw "Error: 2 arguments required to search a table. (Table name and search term.)";
 	}
 
 	//Checking for table in table list.
+	var tables = jsonfile.readFileSync('./rokkit/tables.json');
 	var tIndex = tables.indexOf(tname);
 
 	//Exists?
