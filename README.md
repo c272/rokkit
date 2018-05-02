@@ -18,7 +18,7 @@ rokkit.tableExists('foo'); //returns false, the table no longer exists
 ```
 
 ## Documentation
-**Constructors**
+### Constructors
 
 `Table`
 
@@ -29,7 +29,7 @@ Usage:
 `var tablevar = new Table('tablename');`
 
 
-**Functions**
+### Functions
 
 `Table.createRecord`
 
