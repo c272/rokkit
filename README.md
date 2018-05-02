@@ -3,6 +3,8 @@
 
 This is a really simple JSON database, which allows you to create and delete tables, search whether tables exist, add records and delete records, and more. Extra features are coming in the future to match the other common database solutions. Data in Rokkit is **always persistent**, so whenever you instantiate a new table called "foo", all data from previous runtimes' "foo" table will be present. All of the database structure is stored in a folder called "Rokkit", in the root of your project directory.
 
+**Please note:** This package *always* automatically syncs properties to file when changed. An asynchronous toggle and commands to sync are coming in a later version.
+
 ## Example Usage
 ```
 var rokkit = require('rokkit'); //adding rokkit
@@ -30,8 +32,7 @@ Usage:
 `var tablevar = new Table('tablename');`
 
 
-### Functions
-
+### Methods
 **Table.createRecord**
 
 Creates a record within the table which is being used. For example, using `foo.createRecord('bar', data)` would create a record called "bar" in table "foo".
@@ -86,3 +87,17 @@ To access a record within a table, simply use it like an object. Type the table 
 Usage:
 
 `console.log(tablename.recordname);`
+
+## Deprecated Methods
+Here are methods that are contained in previous versions of the projects that have now been deprecated, and are *not present* in the current version. Don't try and use these if you aren't at an older version! Which versions the functions are present in are shown for each method.
+
+**load**
+
+Loads all saved tables into the `rokkit.loadedTables` variable. No constructors are used in this method. For example, if you saved a table called "foo", you could load it into memory at the start of runtime by doing `rokkit.load()`, and access the variable by using `rokkit.loadedTables.foo`, followed by any properties.
+
+Usage:
+`rokkit.load();`
+
+Reason for Deprecation:
+
+Names of variables became way too long, have now switched the package to constructors.
