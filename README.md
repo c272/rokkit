@@ -39,7 +39,49 @@ Usage:
 
 `tablevar.createRecord('recordname', data);`
 
+---
 
  `Table.deleteRecord`
  
  Deletes an existing record within a table. For example, using `foo.deleteRecord('bar')` would delete the record "bar" from table "foo".
+
+Usage:
+
+`tablevar.deleteRecord('recordname');`
+
+---
+
+`tableExists`
+
+Checks whether a table exists in the current Rokkit database. For example, using `rokkit.tableExists('foo')` would return true if you'd already loaded in the table "foo".
+
+Usage:
+
+`var booleanVariable = rokkit.tableExists('tablename');`
+
+---
+
+`searchTable`
+
+Searches a specific table in the current Rokkit database for a record. For example, using `rokkit.searchTable('foo', 'bar')` would search the table "foo" for a record called "bar", and return true if a corresponding record was found.
+
+Usage:
+
+`var booleanVariable = rokkit.searchTable('tablename', 'recordname');`
+
+---
+
+`deleteTable`
+
+Removes a table and all it's records from the current Rokkit database. Attempting to delete a table that does not exist will force an error. For example, using `rokkit.deleteTable('foo')` would remove the table "foo" from the database. This is one way, and irrevokable.
+
+Usage:
+
+`rokkit.deleteTable('tablename');`
+
+## Accessing Records
+To access a record within a table, simply use it like an object. Type the table name, then the record's name following it to use it. If the table "foo" had a record called "bar", you could access it by using `foo.bar`. The usage is below:
+
+Usage:
+
+`console.log(tablename.recordname);`
