@@ -2,6 +2,10 @@
 var exports = module.exports = {};
 var jsonfile = require('jsonfile');
 var fs = require('fs');
+var WatchJS = require('melanke-watchjs');
+var watch = WatchJS.watch;
+var unwatch = WatchJS.unwatch;
+var callWatchers = WatchJS.callWatchers;
 
 //Loading existing table data from file.
 var tables;
@@ -22,6 +26,7 @@ exports.Table = function (tname) {
 	//Instatiating a new table object.
 	this.tname = tname;
 	this.contents = [];
+	outer = this;
 
 	//Pushing a table into the table data array.
 	doesExist = tables.indexOf(tname);
@@ -71,6 +76,12 @@ exports.Table = function (tname) {
 			jsonfile.writeFileSync("./rokkit/"+this.tname+".json", this);
 		}
 	}
+
+	//Creating a new watcher for this instance.
+	watch(outer, function(){
+		//Syncing object to the file, a property has changed.
+		jsonfile.writeFileSync('./rokkit/'+outer.tname+".json", outer);
+	});
 
 	//Saving table file.
 	jsonfile.writeFileSync('./rokkit/tables.json', tables);
@@ -123,6 +134,13 @@ exports.tableExists = function(tname) {
 		return true;
 	} else {
 		return false;
+	}
+}
+
+//Save all existing tables.
+exports.sync = function() {
+	for (i in tables) {
+
 	}
 }
 
