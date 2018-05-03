@@ -74,7 +74,7 @@ Usage:
 
 **tableExists**
 
-Checks whether a table exists in the current Rokkit database. For example, using `rokkit.tableExists('foo')` would return true if you'd already loaded in the table "foo".
+Checks whether a table exists in the current Rokkit database. For example, using `rokkit.tableExists('foo')` would return true if the table "foo" existed on file.
 
 Usage:
 
