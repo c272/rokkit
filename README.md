@@ -10,13 +10,13 @@ Automatic Syncing:
 
 ```
 var rokkit = require('rokkit'); //adding rokkit
-var table = new rokkit.Table('foo'); //creating a new table
+var foo = new rokkit.Table('foo'); //creating a new table
 
-table.createRecord('bar', 123); //creates a new record called "bar"
-console.log(table.bar); //logs "123" to console
+foo.createRecord('bar', 123); //creates a new record called "bar"
+console.log(foo.bar); //logs "123" to console
 
 console.log(rokkit.searchTable('foo', 'bar')); //logs "true", returns a boolean
-table.deleteRecord('bar'); //deletes the "bar" record
+foo.deleteRecord('bar'); //deletes the "bar" record
 
 rokkit.deleteTable('foo'); //deletes the "foo" table
 rokkit.tableExists('foo'); //returns false, the table no longer exists
