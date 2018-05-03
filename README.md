@@ -3,9 +3,11 @@
 
 This is a really simple JSON database, which allows you to create and delete tables, search whether tables exist, add records and delete records, and more. Extra features are coming in the future to match the other common database solutions. Data in Rokkit is **always persistent**, so whenever you instantiate a new table called "foo", all data from previous runtimes' "foo" table will be present. All of the database structure is stored in a folder called "Rokkit", in the root of your project directory.
 
-**Please note:** This package *always* automatically syncs properties to file when changed. An asynchronous toggle and commands to sync are coming in a later version.
+**Please note:** This package, by default, automatically syncs properties to file when changed. You can toggle manual syncing by setting `syncOnCommand` to true, and using the `rokkit.sync('tablename', tableobj)` method.
 
 ## Example Usage
+Automatic Syncing:
+
 ```
 var rokkit = require('rokkit'); //adding rokkit
 var table = new rokkit.Table('foo'); //creating a new table
@@ -18,6 +20,23 @@ table.deleteRecord('bar'); //deletes the "bar" record
 
 rokkit.deleteTable('foo'); //deletes the "foo" table
 rokkit.tableExists('foo'); //returns false, the table no longer exists
+```
+
+Manual Syncing:
+
+```
+var rokkit = require('rokkit'); //adding rokkit
+rokkit.syncOnCommand = true; //enabling syncOnCommand
+
+var foo = new rokkit.Table('foo');
+foo.createRecord('bar', 123);
+
+//At this point, the variable isn't saved to file, only in memory.
+//So, if you search for "bar" in the table, it WON'T appear.
+rokkit.searchTable('foo', 'bar'); //returns false
+
+rokkit.sync("foo", foo); //saves the table "foo" to file, using the table object foo.
+rokkit.searchTable('foo', 'bar'); //returns true after sync
 ```
 
 ## Documentation
@@ -80,6 +99,23 @@ Removes a table and all it's records from the current Rokkit database. Attemptin
 Usage:
 
 `rokkit.deleteTable('tablename');`
+
+---
+
+**sync**
+
+Saves a table object currently in memory to the selected table file. Syncing a table with the incorrect file will result in errors, so make sure you're binding the correct table to the correct file with this function. You **must** have syncOnCommand enabled for this to work.
+
+Usage:
+`rokkit.sync('tablename', tableobject);`
+
+### Properties
+**syncOnCommand**
+
+Bool, can be set to `true` or `false`. If on, disables automatic table saves, and enables the "sync" command, allowing you to save manually.
+
+Usage:
+`rokkit.syncOnCommand = true;`
 
 ## Accessing Records
 To access a record within a table, simply use it like an object. Type the table name, then the record's name following it to use it. If the table "foo" had a record called "bar", you could access it by using `foo.bar`. The usage is below:

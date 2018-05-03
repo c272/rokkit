@@ -10,6 +10,9 @@ var callWatchers = WatchJS.callWatchers;
 //Loading existing table data from file.
 var tables;
 
+//Sync on command flag.
+exports.syncOnCommand = false;
+
 //Table constructor.
 exports.Table = function (tname) {
 	//Checking if folder exists. If not, making it.
@@ -54,8 +57,11 @@ exports.Table = function (tname) {
 			this[name] = inp;
 			this.contents.push(name);
 
-			//Resaving table.
-			jsonfile.writeFileSync("./rokkit/"+this.tname+".json", this);
+			//Checking if manual sync is enabled.
+			if (exports.syncOnCommand==false) {
+				//Resaving table.
+				jsonfile.writeFileSync("./rokkit/"+this.tname+".json", this);
+			}
 		}
 	}
 	this.deleteRecord = function(name) {
@@ -72,16 +78,23 @@ exports.Table = function (tname) {
 				this.contents.splice(contIndex, 1);
 			}
 
-			//Resaving table.
-			jsonfile.writeFileSync("./rokkit/"+this.tname+".json", this);
+			//Checking if manual sync is enabled.
+			if (exports.syncOnCommand==false) {
+				//Resaving table.
+				jsonfile.writeFileSync("./rokkit/"+this.tname+".json", this);
+			}
 		}
 	}
 
-	//Creating a new watcher for this instance.
-	watch(outer, function(){
-		//Syncing object to the file, a property has changed.
-		jsonfile.writeFileSync('./rokkit/'+outer.tname+".json", outer);
-	});
+	//Checking if sync on command flag is enabled.
+	if (exports.syncOnCommand==false) {
+		//Creating a new watcher for this instance.
+		watch(outer, function(){
+			//Syncing object to the file, a property has changed.
+			console.log(outer.tname);
+			jsonfile.writeFileSync('./rokkit/'+outer.tname+".json", outer);
+		});
+	}
 
 	//Saving table file.
 	jsonfile.writeFileSync('./rokkit/tables.json', tables);
@@ -138,10 +151,19 @@ exports.tableExists = function(tname) {
 }
 
 //Save all existing tables.
-exports.sync = function() {
-	for (i in tables) {
-
+exports.sync = function(name, obj) {
+	//Checking if "sync on command" is enabled.
+	if (exports.syncOnCommand==true) {
+		//Checking if file exists.
+		if (fs.existsSync('./rokkit/'+name+".json")) {
+			jsonfile.writeFileSync("./rokkit/"+name+".json", obj);
+		} else {
+			throw "Table \""+name+"\" does not exist in database.";
+		}
+	} else {
+		throw "syncOnCommand is not enabled. You must enable rokkit.syncOnCommand to use .sync(), otherwise tables are automatically saved.";
 	}
 }
 
 //etc.
+//
