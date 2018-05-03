@@ -1,0 +1,28 @@
+{
+  "name": "rokkit",
+  "version": "2.2.1",
+  "description": "A JSON database system, using tables and records to emulate common database packages.",
+  "main": "rokkit.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/c272/rokkit.git"
+  },
+  "keywords": [
+    "database",
+    "json",
+    "node"
+  ],
+  "author": "C272",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/c272/rokkit/issues"
+  },
+  "homepage": "https://github.com/c272/rokkit#readme",
+  "dependencies": {
+    "jsonfile": "^4.0.0",
+    "melanke-watchjs": "^1.4.3"
+  }
+}
